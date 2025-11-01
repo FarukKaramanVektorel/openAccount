@@ -3,6 +3,7 @@ package com.openaccount.open_account.data.model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,6 +26,7 @@ public class Movement {
 	private Long id;
 	private LocalDate movementDate;
 	private Integer transactionType;
+    @JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="customer_id")
 	private Customer customer;

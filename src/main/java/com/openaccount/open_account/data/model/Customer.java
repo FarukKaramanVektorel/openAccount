@@ -3,6 +3,7 @@ package com.openaccount.open_account.data.model;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,6 +28,8 @@ public class Customer {
 	private String phone;
 	private String note;
 	private BigDecimal balance;
+    private Boolean active=true;
+    @JsonManagedReference
 	@OneToMany(mappedBy = "customer")
 	private List<Movement> movements;
 }

@@ -2,12 +2,8 @@ package com.openaccount.open_account.controller;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.openaccount.open_account.data.dto.movement.MovementUpdateDto;
+import org.springframework.web.bind.annotation.*;
 
 import com.openaccount.open_account.data.dto.movement.MovementCreateDto;
 import com.openaccount.open_account.data.dto.movement.MovementResponseDto;
@@ -20,19 +16,25 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/movements")
 public class MovementController {
-	private final MovementService service;
+    private final MovementService service;
 
-	@GetMapping("/{id}")
-	public MovementResponseDto getById(@PathVariable Long id) {
-		return service.getById(id);
-	}
+    @GetMapping("/get/{id}")
+    public MovementResponseDto getById(@PathVariable Long id) {
+        return service.getById(id);
+    }
 
-	@PostMapping("/")
-	public MovementResponseDto create(@RequestBody MovementCreateDto dto) {
-		return service.create(dto);
-	}
-	@GetMapping("/customer/{id}")
-	public List<Movement> getByCustomerId(@PathVariable Long id){
-		return service.getByCustomerId(id);
-	}
+    @PostMapping("/create/")
+    public MovementResponseDto create(@RequestBody MovementCreateDto dto) {
+        return service.create(dto);
+    }
+
+    @GetMapping("/customer/{id}")
+    public List<MovementResponseDto> getByCustomerId(@PathVariable Long id) {
+        return service.getByCustomerId(id);
+    }
+
+    @PutMapping("/update/")
+    public MovementResponseDto update(@RequestBody MovementUpdateDto dto) {
+        return service.update(dto);
+    }
 }

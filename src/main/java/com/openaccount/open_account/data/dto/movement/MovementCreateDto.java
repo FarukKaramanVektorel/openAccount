@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MovementCreateDto {
 	private LocalDate movementDate;
-	private TransactionType transactionType;
+	private Integer transactionType;
 	private BigDecimal amount;
 	private Long customerId;
 }
