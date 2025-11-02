@@ -46,6 +46,7 @@ public class MovementService {
             movement.setCustomer(customer);
             movement.setMovementDate(dto.getMovementDate());
             movement.setTransactionType(dto.getTransactionType());
+            movement.setActive(true);
             Movement createdMovement = repository.save(movement);
             CustomerResponseDto savedCustomer = null;
             if (createdMovement != null) {
@@ -69,16 +70,18 @@ public class MovementService {
 
     @Transactional
     public MovementResponseDto update(MovementUpdateDto dto) {
-        Movement movement = repository.findById(dto.getId()).orElseThrow(() -> new CustomMovementException(dto.getId()));
-        if (!(dto.getCustomerId() == movement.getCustomer().getId())) {
-            customerService.updateBalance(movement.getAmount(),
-                    TransactionType.reverse(TransactionType.from(dto.getTransactionType())), movement.getCustomer().getId());
+        Movement oldMovement = repository.findById(dto.getId()).orElseThrow(() -> new CustomMovementException(dto.getId()));
+        if (oldMovement.getActive()) {
+            oldMovement.setActive(false);
+            Customer customer = customerRepository.findById(dto.getCustomerId()).orElseThrow(() -> new CustomCustomerException(dto.getCustomerId()));
+            customerService.updateBalance(dto.getAmount(),
+                    TransactionType.reverse(TransactionType.from(oldMovement.getTransactionType())),
+                    oldMovement.getCustomer().getId());
+            oldMovement.setActive(false);
+            repository.save(oldMovement);
         }
-        Movement createdMovement = repository.save(mapper.map(dto, Movement.class));
-        CustomerResponseDto savedCustomer = customerService.updateBalance(dto.getAmount(),
-               TransactionType.from( dto.getTransactionType()), dto.getCustomerId());
-        MovementResponseDto returnDto = mapper.map(createdMovement, MovementResponseDto.class);
-        returnDto.setCustomerBalance(savedCustomer.getBalance());
+
+        MovementResponseDto returnDto = create(mapper.map(dto, MovementCreateDto.class));
         return returnDto;
     }
 

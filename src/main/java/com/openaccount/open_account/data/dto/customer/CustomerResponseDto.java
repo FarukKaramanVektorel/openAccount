@@ -25,6 +25,6 @@ public class CustomerResponseDto {
         if(this.active){
             return "Aktif";
         }
-        return "Pasif";
+        return "Silinmiş";
     }
 }

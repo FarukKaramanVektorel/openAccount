@@ -31,4 +31,5 @@ public class Movement {
 	@JoinColumn(name="customer_id")
 	private Customer customer;
 	private BigDecimal amount;
+    private Boolean active;
 }

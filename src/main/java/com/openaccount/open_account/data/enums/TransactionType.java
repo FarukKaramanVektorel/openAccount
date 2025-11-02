@@ -6,10 +6,14 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Arrays;
+import java.util.List;
+
 @AllArgsConstructor
 @Getter
 public enum TransactionType {
-    CREDIT("Bakiye Ekle", 1), DEBIT("Bakiye Düş", 2);
+    CREDIT("Bakiye Ekle", 1),
+    DEBIT("Bakiye Düş", 2);
 
     private String value;
     private int key;
@@ -44,6 +48,9 @@ public enum TransactionType {
             return DEBIT;
         }
         return CREDIT;
+    }
 
+    public static List<TransactionType> getList(){
+        return Arrays.asList(TransactionType.CREDIT,TransactionType.DEBIT);
     }
 }

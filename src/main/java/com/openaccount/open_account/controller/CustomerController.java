@@ -24,15 +24,15 @@ public class CustomerController {
         return service.getById(id);
     }
 
-    @GetMapping("/getall/")
+    @GetMapping("/getAll/")
     public List<CustomerResponseDto> getAll() {
         return service.getAll();
     }
-    @GetMapping("/getactive/")
+    @GetMapping("/getActive/")
     public List<CustomerResponseDto> getActive() {
         return service.getAllActive();
     }
-    @GetMapping("/getpasif/")
+    @GetMapping("/getDeleted/")
     public List<CustomerResponseDto> getPasif() {
         return service.getAllPasif();
     }

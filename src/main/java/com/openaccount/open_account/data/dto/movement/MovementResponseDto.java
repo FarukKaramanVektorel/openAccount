@@ -22,6 +22,18 @@ public class MovementResponseDto {
     @JsonIgnore
     private Integer transactionType;
     private Long customerId;
+    private String status;
+    @JsonIgnore
+    private Boolean active;
+
+    public String getStatus() {
+        if(active){
+            status="Aktif";
+        }else{
+            status="Silinmiş";
+        }
+        return status;
+    }
 
     public TransactionType getTransactionTypeEnum() {
         return TransactionType.from(this.transactionType);
