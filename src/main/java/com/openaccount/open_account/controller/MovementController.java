@@ -3,6 +3,7 @@ package com.openaccount.open_account.controller;
 import java.util.List;
 
 import com.openaccount.open_account.data.dto.movement.MovementUpdateDto;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import com.openaccount.open_account.data.dto.movement.MovementCreateDto;
@@ -24,7 +25,7 @@ public class MovementController {
     }
 
     @PostMapping("/create/")
-    public MovementResponseDto create(@RequestBody MovementCreateDto dto) {
+    public MovementResponseDto create(@RequestBody @Valid MovementCreateDto dto) {
         return service.create(dto);
     }
 
@@ -34,7 +35,7 @@ public class MovementController {
     }
 
     @PutMapping("/update/")
-    public MovementResponseDto update(@RequestBody MovementUpdateDto dto) {
+    public MovementResponseDto update(@RequestBody @Valid MovementUpdateDto dto) {
         return service.update(dto);
     }
 }

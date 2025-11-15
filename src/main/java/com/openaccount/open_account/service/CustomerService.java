@@ -66,12 +66,17 @@ public class CustomerService {
     public CustomerResponseDto update(CustomerUpdateDto dto) {
         if (repository.existsById(dto.getId())) {
             Customer customer = repository.findById(dto.getId()).get();
+            customer.setFirstName(dto.getFirstName());
+            customer.setLastName(dto.getLastName());
+            customer.setPhone(dto.getPhone());
+            customer.setNote(dto.getNote());
             return mapper.map(repository.save(customer), CustomerResponseDto.class);
         } else {
             throw new CustomCustomerException(dto.getId());
         }
-
     }
+
+
 
     public CustomerResponseDto createCustomer(CustomerCreateDto dto) {
         Customer customer = mapper.map(dto, Customer.class);
@@ -80,22 +85,25 @@ public class CustomerService {
         return mapper.map(repository.save(customer), CustomerResponseDto.class);
     }
 
+    // ... CustomerService.java ...
+
     public CustomerResponseDto updateBalance(BigDecimal balance, TransactionType type, Long customerId) {
         if (repository.existsById(customerId)) {
             Customer customer = repository.findById(customerId).orElse(null);
             BigDecimal blnce = customer.getBalance();
             BigDecimal total = new BigDecimal("0");
-            if (type.getKey() == 1) {// 1 ekle
+            if (type.getKey() == 1) {
                 total = blnce.add(balance);
-            } else {// 2 düş
-                total = blnce.subtract(balance);
-            }
+            } else {
+                if (blnce.compareTo(balance) < 0) {
+                    throw new CustomCustomerException("Yetersiz bakiye. Mevcut bakiye: " + blnce + " TL, Çekilmek istenen: " + balance + " TL");
+                }
+                total = blnce.subtract(balance);            }
             customer.setBalance(total);
-
             return mapper.map(repository.save(customer), CustomerResponseDto.class);
         }
-
         return null;
     }
-
 }
+
+
