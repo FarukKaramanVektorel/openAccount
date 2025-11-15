@@ -43,10 +43,13 @@ public class CustomerService {
         ).collect(Collectors.toList());
     }
 
-
     public CustomerResponseDto getById(Long id) {
-        return mapper.map(repository.findById(id), CustomerResponseDto.class);
+        Customer customer = repository.findById(id)
+                .orElseThrow(() -> new CustomCustomerException(id));
+        return mapper.map(customer, CustomerResponseDto.class);
     }
+
+
 
     public void delete(Long id) {
         if (repository.existsById(id)) {
@@ -85,7 +88,7 @@ public class CustomerService {
         return mapper.map(repository.save(customer), CustomerResponseDto.class);
     }
 
-    // ... CustomerService.java ...
+
 
     public CustomerResponseDto updateBalance(BigDecimal balance, TransactionType type, Long customerId) {
         if (repository.existsById(customerId)) {

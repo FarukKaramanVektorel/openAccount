@@ -73,16 +73,16 @@ public class MovementService {
         Movement oldMovement = repository.findById(dto.getId()).orElseThrow(() -> new CustomMovementException(dto.getId()));
         if (oldMovement.getActive()) {
             oldMovement.setActive(false);
-            Customer customer = customerRepository.findById(dto.getCustomerId()).orElseThrow(() -> new CustomCustomerException(dto.getCustomerId()));
-            customerService.updateBalance(dto.getAmount(),
+            Customer customer = customerRepository.findById(oldMovement.getCustomer().getId())
+                    .orElseThrow(() -> new CustomCustomerException(oldMovement.getCustomer().getId()));
+            customerService.updateBalance(oldMovement.getAmount(), // dto.getAmount() DEĞİL!
                     TransactionType.reverse(TransactionType.from(oldMovement.getTransactionType())),
                     oldMovement.getCustomer().getId());
-            oldMovement.setActive(false);
             repository.save(oldMovement);
         }
-
         MovementResponseDto returnDto = create(mapper.map(dto, MovementCreateDto.class));
         return returnDto;
     }
-
 }
+
+
