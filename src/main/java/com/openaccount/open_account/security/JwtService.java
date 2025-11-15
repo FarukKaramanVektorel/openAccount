@@ -23,7 +23,7 @@ public class JwtService {
 
     // application.properties'teki anahtarı SecretKey objesine çevirir
     private SecretKey getSigningKey() {
-        byte[] keyBytes = SECRET_KEY.getBytes(StandardCharsets.UTF_8);
+        byte[] keyBytes = Base64.getDecoder().decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
